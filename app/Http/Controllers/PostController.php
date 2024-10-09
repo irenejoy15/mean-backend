@@ -25,8 +25,10 @@ class PostController extends Controller
             'content'=>$content,
         );
         Post::create($data);
+        $latest = Post::latest()->first();
         return response()->json([
             'message' => 'IRENE SYPEERRRR',
+            'postId'=>$latest->id
         ], 201);
     }
 
