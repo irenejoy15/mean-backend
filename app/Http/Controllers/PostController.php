@@ -29,4 +29,11 @@ class PostController extends Controller
             'message' => 'IRENE SYPEERRRR',
         ], 201);
     }
+
+    public function delete($id){
+        Post::where('id',$id)->delete();
+        return response()->json([
+            'message' => 'DELETED',
+        ], 200);
+    }
 }
