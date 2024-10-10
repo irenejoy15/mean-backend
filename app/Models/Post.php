@@ -13,4 +13,8 @@ class Post extends Model
         'title',
         'content',
     ];
+
+    protected $casts = [
+        'id' => 'string',
+    ];
 }

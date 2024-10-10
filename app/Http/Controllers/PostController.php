@@ -38,4 +38,28 @@ class PostController extends Controller
             'message' => 'DELETED',
         ], 200);
     }
+
+    public function edit($id){
+        $post_check = Post::where('id',$id)->first();
+        $post = array(
+            'id'=>$post_check->id,
+            'title'=>$post_check->title,
+            'content'=>$post_check->content,
+        );
+        return response()->json($post);
+    }
+
+    
+    public function posts_search(Request $request){
+        $search = $request->input('title');
+        if(empty($search)):
+            $posts = Post::all();
+        else:
+            $posts = Post::where('title', 'like', '%'.$search.'%')->get();
+        endif;
+        return response()->json([
+            'posts' => $posts,
+            'message' => 'IRENE SYPEERRRR',
+        ], 200);
+    }
 }
