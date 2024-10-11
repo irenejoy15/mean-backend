@@ -48,6 +48,16 @@ class PostController extends Controller
         );
         return response()->json($post);
     }
+    
+    public function edittest($id){
+        $post_check = Post::where('id',$id)->first();
+        $post = array(
+            'id'=>$post_check->id,
+            'title'=>$post_check->title,
+            'content'=>$post_check->content,
+        );
+        return response()->json($post);
+    }
 
     
     public function posts_search(Request $request){
