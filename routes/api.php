@@ -8,6 +8,7 @@ Route::get('/posts', [PostController::class, 'posts']);
 Route::get('/posts/search', [PostController::class, 'posts_search']);
 Route::post('/posts', [PostController::class, 'create_post']);
 Route::get('/posts/{id}', [PostController::class, 'edit']);
+Route::put('/posts/{id}', [PostController::class, 'update']);
 Route::get('/posts/edittest/{id}', [PostController::class, 'edittest']);
 Route::delete('/posts/{id}', [PostController::class, 'delete']);
 Route::get('/user', function (Request $request) {

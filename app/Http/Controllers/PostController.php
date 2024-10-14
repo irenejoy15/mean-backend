@@ -59,6 +59,20 @@ class PostController extends Controller
         return response()->json($post);
     }
 
+    public function update(Request $request,$id){
+        $title = $request->input('title');
+        $content = $request->input('content');
+
+        $data = array(
+            'title'=>$title,
+            'content' => $content
+        );
+
+        Post::where('id',$id)->update($data);
+        return response()->json([
+            'message' => 'UPDATE SUCCESSFULLY',
+        ], 200);
+    }
     
     public function posts_search(Request $request){
         $search = $request->input('title');
