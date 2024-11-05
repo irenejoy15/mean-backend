@@ -12,7 +12,7 @@ class Post extends Model
     protected $fillable = [
         'title',
         'content',
-        'image',
+        'imagePath',
     ];
 
     protected $casts = [

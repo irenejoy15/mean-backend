@@ -23,19 +23,24 @@ class PostController extends Controller
         $image = $request->file('image');
 
         $photo_name = time().'.'.$image->extension();
-        $image->move('backend/images', $photo_name);
+        $image->move('images', $photo_name);
         $photo_image_post = $photo_name;
 
         $data = array(
             'title'=>$title,
             'content'=>$content,
-            'image'=>$photo_image_post
+            'imagePath'=>'http://localhost:82/mean-backend/public/images/'.$photo_image_post
         );
         Post::create($data);
         $latest = Post::latest()->first();
         return response()->json([
             'message' => 'IRENE SYPEERRRR',
-            'postId'=>$latest->id
+            'post'=>array(
+                'id'=>$latest->id,
+                'title'=>$title,
+                'content'=>$content,
+                'imagePath'=>$photo_image_post
+            )
         ], 201);
     }
 
