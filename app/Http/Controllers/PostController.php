@@ -57,6 +57,7 @@ class PostController extends Controller
             'id'=>$post_check->id,
             'title'=>$post_check->title,
             'content'=>$post_check->content,
+            'imagePath'=>$post_check->imagePath
         );
         return response()->json($post);
     }
@@ -67,18 +68,32 @@ class PostController extends Controller
             'id'=>$post_check->id,
             'title'=>$post_check->title,
             'content'=>$post_check->content,
+            'imagePath'=>$post_check->imagePath
         );
         return response()->json($post);
     }
 
-    public function update(Request $request,$id){
+    public function update(CreatePostRequest $request,$id){
         $title = $request->input('title');
         $content = $request->input('content');
+        $image = $request->file('image');
 
-        $data = array(
-            'title'=>$title,
-            'content' => $content
-        );
+        if(!empty($image)):
+            $photo_name = time().'.'.$image->extension();
+            $image->move('images', $photo_name);
+            $photo_image_post = $photo_name;
+
+            $data = array(
+                'title'=>$title,
+                'content' => $content,
+                'imagePath'=>'http://localhost:82/mean-backend/public/images/'.$photo_image_post
+            );
+        else:
+            $data = array(
+                'title'=>$title,
+                'content' => $content
+            );
+        endif;
 
         Post::where('id',$id)->update($data);
         return response()->json([
