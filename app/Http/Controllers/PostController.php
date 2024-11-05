@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\CreatePostRequest;
 use App\Models\Post;
 class PostController extends Controller
 {
@@ -16,13 +17,19 @@ class PostController extends Controller
         ], 200);
     }
 
-    public function create_post(Request $request){
+    public function create_post(CreatePostRequest $request){
         $title = $request->input('title');
         $content = $request->input('content');
+        $image = $request->file('image');
+
+        $photo_name = time().'.'.$image->extension();
+        $image->move('backend/images', $photo_name);
+        $photo_image_post = $photo_name;
 
         $data = array(
             'title'=>$title,
             'content'=>$content,
+            'image'=>$photo_image_post
         );
         Post::create($data);
         $latest = Post::latest()->first();

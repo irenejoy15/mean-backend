@@ -1,2 +1,3 @@
 
 php artisan migrate --path=\database/migrations/2024_10_08_081916_create_posts_table.php
+php artisan migrate:refresh --path=\database/migrations/2024_10_08_081916_create_posts_table.php
