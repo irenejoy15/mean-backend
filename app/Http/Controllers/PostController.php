@@ -9,8 +9,26 @@ class PostController extends Controller
 {
     //
 
-    public function posts(){
-        $posts = Post::all();
+    public function posts(Request $request){
+        $page = $request->get('pageSize');
+        $limit = $request->get('limit');
+
+        $post_query = Post::query();
+        
+        if($page):
+            $page = $page;
+        else:
+            $page = 1;
+        endif;
+
+        if($limit):
+            $limit = $limit;
+        else:
+            $limit = 2;
+        endif;
+
+        $skip = ($page - 1) * $limit;
+        $posts = $post_query->skip($skip)->limit($limit)->get();
         return response()->json([
             'posts' => $posts,
             'message' => 'IRENE SYPEERRRR',
@@ -102,11 +120,30 @@ class PostController extends Controller
     }
     
     public function posts_search(Request $request){
-        $search = $request->input('title');
-        if(empty($search)):
-            $posts = Post::all();
+        $search = $request->get('title');
+        $page = $request->get('pageSize');
+        $limit = $request->get('limit');
+
+        $post_query = Post::query();
+        
+        if($page):
+            $page = $page;
         else:
-            $posts = Post::where('title', 'like', '%'.$search.'%')->get();
+            $page = 1;
+        endif;
+
+        if($limit):
+            $limit = $limit;
+        else:
+            $limit = 2;
+        endif;
+
+        $skip = ($page - 1) * $limit;
+       
+        if(empty($search)):
+            $posts = $post_query->skip($skip)->limit($limit)->get();
+        else:
+            $posts = $post_query->where('title', 'like', '%'.$search.'%')->skip($skip)->limit($limit)->get();
         endif;
         return response()->json([
             'posts' => $posts,
