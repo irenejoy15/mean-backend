@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
-class UserController extends Controller
+use App\Models\User;
+class UserController extends Controller 
 {
     public function signup(Request $request){
         $email = $request->input('email');
@@ -17,7 +17,7 @@ class UserController extends Controller
             'password'=>$hash_password,
         ]);
 
-        return Response::json([
+        return  response()->json([
             'result'=>$user,
             // 'token'=>$token,
             // 'authorization' => 'Bearer '.$token,
@@ -25,3 +25,4 @@ class UserController extends Controller
         ], 201);
     }
 }
+ 

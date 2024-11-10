@@ -13,7 +13,7 @@ Route::post('/posts/{id}', [PostController::class, 'update']);
 Route::get('/posts/edittest/{id}', [PostController::class, 'edittest']);
 Route::delete('/posts/{id}', [PostController::class, 'delete']);
 
-Route::get('/signup', [UserController::class, 'signup']);
+Route::post('/signup', [UserController::class, 'signup']);
 
 Route::get('/user', function (Request $request) {
     return $request->user();
