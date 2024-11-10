@@ -21,9 +21,11 @@ class PostController extends Controller
 
         
         $posts = $post_query->skip($skip)->limit($pageSize)->get();
+       
         return response()->json([
             'posts' => $posts,
             'message' => 'IRENE SYPEERRRR',
+            'maxPosts'=>Post::count()
         ], 200);
     }
 
@@ -124,13 +126,16 @@ class PostController extends Controller
 
         if(empty($search)):
             $posts = $post_query->skip($skip)->limit($pageSize)->get();
+            $count =  Post::count();
         else:
             $posts = $post_query->where('title', 'like', '%'.$search.'%')->skip($skip)->limit($pageSize)->get();
+            $count =  Post::where('title', 'like', '%'.$search.'%')->count();
         endif;
-        
+
         return response()->json([
             'posts' => $posts,
             'message' => 'IRENE SYPEERRRR',
+            'maxPosts' => $count
         ], 200);
     }
 }
