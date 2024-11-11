@@ -14,7 +14,7 @@ use App\Models\User;
 
 class AuthController extends Controller
 {
-    public function login(LoginRequest $request){
+    public function login(Request $request){
         $email = $request->input('email');
         $password = $request->input('password');
         $user = User::where('email',$email)->first();    
@@ -30,10 +30,9 @@ class AuthController extends Controller
       
         if (Hash::check($password, $user->password)):
             $token = Auth::login($user);
-            
             $response = Response::json([
-                $user,
-                $user->createToken('irenereact_lalavel_session')->plainTextToken,
+                // $user,
+                "token"=>$user->createToken('mean-backend')->plainTextToken,
                 // 'authorization' => [
                 //     'token' => $token,
                 //     'type' => 'bearer',

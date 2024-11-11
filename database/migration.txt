@@ -5,3 +5,7 @@ php artisan migrate:refresh --path=\database/migrations/2024_10_08_081916_create
 
 php artisan migrate --path=\database/migrations/0001_01_01_000000_create_users_table.php
 php artisan migrate:refresh --path=\database/migrations/0001_01_01_000000_create_users_table.php
+
+php artisan migrate --path=\database/migrations/2024_10_08_033857_create_personal_access_tokens_table.php
+
+php artisan migrate:refresh --path=\database/migrations/2024_10_08_033857_create_personal_access_tokens_table.php
