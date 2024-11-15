@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\CreatePostRequest;
 use App\Models\Post;
-class PostController extends Controller
+use JWTAuth;
+use App\Http\Controllers\BaseController;
+class PostController extends BaseController
 {
     //
 

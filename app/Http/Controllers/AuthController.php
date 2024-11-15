@@ -2,51 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Response;
-use Hash;
-use Auth;
-use JWTAuth;
-use Str;
-use Laravel\Sanctum\PersonalAccessToken;
-use Symfony\Component\HttpFoundation\Cookie;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Validator;
 
-class AuthController extends Controller
+class AuthController  extends BaseController
 {
-    public function login(Request $request){
-        $email = $request->input('email');
-        $password = $request->input('password');
-        $user = User::where('email',$email)->first();    
-
-        if(!$user):
-            return Response::json([
-                'msg'=>'Invalid Credentials',
-                'errors' => 'Invalid Credentials' ,
-                'status' => true
-            ], 401);
-        endif;
-        $minutes = 60;
-      
-        if (Hash::check($password, $user->password)):
-            $token = Auth::login($user);
-            $response = Response::json([
-                // $user,
-                "token"=>$user->createToken('mean-backend')->plainTextToken,
-                // 'authorization' => [
-                //     'token' => $token,
-                //     'type' => 'bearer',
-                // ],
-                'authorization' => 'Bearer '.$token,
-            ], 200);
-           
-
-            return $response;
-        else:
-            return Response::json([
-                'message'=>'Password does not match',
-            ], 401);
-        endif;
+    public function login(Request $request): JsonResponse
+    {
+        if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){ 
+            $user = Auth::user(); 
+            $success['token'] =  $user->createToken('MyApp')->plainTextToken; 
+            $success['name'] =  $user->name;
+   
+            return response()->json([
+                'token' =>  $user->createToken('MyApp')->plainTextToken,
+                'expiresIn'=>3600
+            ]);
+        } 
+        else{ 
+            return $this->sendError('Unauthorised.', ['error'=>'Unauthorised']);
+        } 
     }
 
     protected function createNewToken($token){

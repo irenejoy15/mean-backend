@@ -9,6 +9,15 @@ use App\Http\Controllers\AuthController;
 Route::post('/signup', [UserController::class, 'signup']);
 Route::post('/login', [AuthController::class, 'login']);
 
+Route::get('/clear', function() {
+    Artisan::call('config:clear');
+    Artisan::call('config:cache');
+    Artisan::call('view:clear');
+ 
+    return "Cleared!";
+ 
+ });
+
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/posts', [PostController::class, 'posts']);
     Route::get('/posts/search', [PostController::class, 'posts_search']);

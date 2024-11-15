@@ -1,4 +1,21 @@
 https://blog.logrocket.com/implementing-jwt-authentication-laravel-10/
+https://laravel.com/docs/11.x/sanctum
+https://medium.com/@noumcpe0007/laravel-11-rest-api-authentication-using-sanctum-tutorial-12231b02354b
+
+php artisan install:api
+php artisan config:publish cors
+
+use Laravel\Sanctum\HasApiTokens;
+ 
+class User extends Authenticatable
+{
+    use HasApiTokens, HasFactory, Notifiable;
+}
+
+php artisan migrate --path=\database/migrations/2024_11_14_060612_create_personal_access_tokens_table.php
+
+
+php artisan migrate:refresh --path=\database/migrations/2024_11_14_060612_create_personal_access_tokens_table.php
 
 php artisan migrate --path=\database/migrations/2024_10_08_081916_create_posts_table.php
 php artisan migrate:refresh --path=\database/migrations/2024_10_08_081916_create_posts_table.php
