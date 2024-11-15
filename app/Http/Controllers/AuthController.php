@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Validator;
 
 class AuthController  extends BaseController
 {
+    // https://medium.com/@noumcpe0007/laravel-11-rest-api-authentication-using-sanctum-tutorial-12231b02354b
     public function login(Request $request): JsonResponse
     {
         if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){ 
