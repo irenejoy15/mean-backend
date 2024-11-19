@@ -13,6 +13,7 @@ class Post extends Model
         'title',
         'content',
         'imagePath',
+        'creator'
     ];
 
     protected $casts = [
