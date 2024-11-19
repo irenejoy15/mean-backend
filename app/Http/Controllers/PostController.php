@@ -7,21 +7,22 @@ use App\Http\Requests\CreatePostRequest;
 use App\Models\Post;
 use JWTAuth;
 use App\Http\Controllers\BaseController;
+use Auth;
 class PostController extends BaseController
 {
     //
 
     public function posts(Request $request){
-        $token = JWTAuth::getToken();
+        $token = Auth::user()->currentAccessToken();
         $pageSize = $request->get('pagesize');
         $currentPage = $request->get('page');
-
+        
         $post_query = Post::query();
         
         if($pageSize && $currentPage):
             $skip = $pageSize * ($currentPage-1);
         endif;
-
+        $user = Auth::user(); 
         
         $posts = $post_query->skip($skip)->limit($pageSize)->get();
        
@@ -29,12 +30,14 @@ class PostController extends BaseController
             'authorization' => 'Bearer '.$token,
             'posts' => $posts,
             'message' => 'IRENE SYPEERRRR',
-            'maxPosts'=>Post::count()
+            'maxPosts'=>Post::count(),
+            'user'=>$user
         ], 200);
     }
 
     public function create_post(CreatePostRequest $request){
-        $token = JWTAuth::getToken();
+        $token = Auth::user()->currentAccessToken();
+        $user = Auth::user();
         $title = $request->input('title');
         $content = $request->input('content');
         $image = $request->file('image');
@@ -46,7 +49,8 @@ class PostController extends BaseController
         $data = array(
             'title'=>$title,
             'content'=>$content,
-            'imagePath'=>'http://localhost:82/mean-backend/public/images/'.$photo_image_post
+            'imagePath'=>'http://localhost:82/mean-backend/public/images/'.$photo_image_post,
+            'creator'=>$user->id
         );
         Post::create($data);
         $latest = Post::latest()->first();
@@ -57,7 +61,8 @@ class PostController extends BaseController
                 'id'=>$latest->id,
                 'title'=>$title,
                 'content'=>$content,
-                'imagePath'=>$photo_image_post
+                'imagePath'=>$photo_image_post,
+                'creator'=>$user->id
             )
         ], 201);
     }

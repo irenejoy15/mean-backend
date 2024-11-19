@@ -8,7 +8,6 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Validator;
-
 class AuthController  extends BaseController
 {
     // https://medium.com/@noumcpe0007/laravel-11-rest-api-authentication-using-sanctum-tutorial-12231b02354b
