@@ -68,12 +68,21 @@ class PostController extends BaseController
     }
 
     public function delete($id){
-        $token = JWTAuth::getToken();
-        Post::where('id',$id)->delete();
-        return response()->json([
-            'message' => 'DELETED',
-            'authorization' => 'Bearer '.$token
-        ], 200);
+        $user = Auth::user();
+        $token = Auth::user()->currentAccessToken();
+        $post = Post::where('id',$id)->first();
+        if($user->id == $post->creator):
+            Post::where('id',$id)->delete();
+            return response()->json([
+                'message' => 'DELETED',
+                'authorization' => 'Bearer '.$token
+            ], 200);
+        else:
+            return response()->json([
+                'message' => 'NOT AUHTORIZE',
+                'authorization' => 'Bearer '.$token
+            ], 401);
+        endif;
     }
 
     public function edit($id){
@@ -102,8 +111,9 @@ class PostController extends BaseController
         $title = $request->input('title');
         $content = $request->input('content');
         $image = $request->file('image');
-        $token = JWTAuth::getToken();
-        
+        $user = Auth::user();
+        $token = Auth::user()->currentAccessToken();
+
         if(!empty($image)):
             $photo_name = time().'.'.$image->extension();
             $image->move('images', $photo_name);
@@ -121,11 +131,20 @@ class PostController extends BaseController
             );
         endif;
 
-        Post::where('id',$id)->update($data);
-        return response()->json([
-            'message' => 'UPDATE SUCCESSFULLY',
-            'authorization' => 'Bearer '.$token
-        ], 200);
+        $check_post = Post::where('id',$id)->first();
+        if($check_post->creator == $user->id):
+            Post::where('id',$id)->update($data);
+            return response()->json([
+                'message' => 'UPDATE SUCCESSFULLY',
+                'authorization' => 'Bearer '.$token
+            ], 200);
+        else:
+            return response()->json([
+                'message' => 'NOT AUTHORIZE',
+                'authorization' => 'Bearer '.$token
+            ], 401);
+        endif;
+       
     }
     
     public function posts_search(Request $request){
