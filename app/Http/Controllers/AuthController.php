@@ -20,6 +20,7 @@ class AuthController  extends BaseController
    
             return response()->json([
                 'token' =>  $user->createToken('MyApp')->plainTextToken,
+                'userId' => $user->id,
                 'expiresIn'=>3600
             ]);
         } 
